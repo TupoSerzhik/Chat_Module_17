@@ -5,7 +5,8 @@
 #include "User.h"
 #include "AuthManager.h"
 
-class MessageService {
+class MessageService
+{
 private:
     AuthManager& authManager;
 

@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 
-class User {
+class User
+{
 private:
     std::string username;
     std::string passwordHash;

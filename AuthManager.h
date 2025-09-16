@@ -5,7 +5,8 @@
 #include "User.h"
 #include "SHA1.h"
 
-class AuthManager {
+class AuthManager
+{
 private:
     std::vector<User> users;
     SHA1 sha1;

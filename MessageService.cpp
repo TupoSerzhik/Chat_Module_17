@@ -1,11 +1,13 @@
 ﻿#include "MessageService.h"
 #include <iostream>
 
-MessageService::MessageService(AuthManager& authManager) : authManager(authManager) {}
+MessageService::MessageService(AuthManager & authManager) : authManager(authManager) {}
 
-bool MessageService::sendPrivateMessage(const std::string& sender, const std::string& recipient, const std::string& message) {
+bool MessageService::sendPrivateMessage(const std::string& sender, const std::string& recipient, const std::string& message) 
+{
     User* recipientUser = authManager.findUser(recipient);
-    if (!recipientUser) {
+    if (!recipientUser)
+    {
         std::cout << " Пользователь '" << recipient << "' не найден!\n";
         return false;
     }
@@ -16,12 +18,15 @@ bool MessageService::sendPrivateMessage(const std::string& sender, const std::st
     return true;
 }
 
-void MessageService::broadcastMessage(const std::string& sender, const std::string& message) {
+void MessageService::broadcastMessage(const std::string& sender, const std::string& message) 
+{
     std::string fullMessage = "📢 РАССЫЛКА от " + sender + ": " + message;
 
-    // Отправляем сообщение всем пользователям
-    for (auto& user : authManager.getUsers()) {
-        if (user.getUsername() != sender) { // Не отправляем себе
+
+    for (auto& user : authManager.getUsers()) 
+    {
+        if (user.getUsername() != sender)
+        {
             const_cast<User&>(user).addMessage(fullMessage);
         }
     }

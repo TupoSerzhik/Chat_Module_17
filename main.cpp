@@ -6,153 +6,227 @@
 using namespace std;
 
 
-void showMenu()
+static void showMenu()
 {
-    cout << "\n===  Система сообщений ===\n";
-    cout << "1.  Регистрация\n";
-    cout << "2.  Вход\n";
-    cout << "3.  Отправить личное сообщение\n";
-    cout << "4.  Отправить сообщение всем\n";
-    cout << "5.  Показать мои сообщения\n";
-    cout << "6.  Список пользователей\n";
-    cout << "7.  Очистить мои сообщения\n";
-    cout << "8.  Выход\n";
+    cout << "1.  Регистрация \n";
+    cout << "2.  Вход \n";
+    cout << "3.  Отправить личное сообщение \n";
+    cout << "4.  Отправить сообщение всем \n";
+    cout << "5.  Показать мои сообщения \n";
+    cout << "6.  Список пользователей \n";
+    cout << "7.  Очистить мои сообщения \n";
+    cout << "8.  Выход \n";
     cout << "Выберите опцию: ";
 }
-string username, password, recipient, message;
+
 
 int main()
 {
+    setlocale(LC_ALL, "RU");
+
     AuthManager authManager;
     MessageService messageService(authManager);
     User* currentUser = nullptr;
 
     int choice;
-    
 
-    cout << "Добро пожаловать в систему сообщений!\n";
-    cout << "Предустановленные пользователи:\n";
-    cout << "- admin / admin123\n";
-    cout << "- user1 / password1\n";
-    cout << "- user2 / password2\n";
+    string username, password, recipient, message;
+
+    cout << "Добро пожаловать в чат! \n\n";
+    cout << "Предустановленные пользователи: \n";
+    cout << "- admin / admin123 \n";
+    cout << "- user1 / password1 \n";
+    cout << "- user2 / password2 \n\n";
 
     do
     {
-        if (currentUser) 
+        if (currentUser)
         {
-            cout << "\nТекущий пользователь: " << currentUser->getUsername() << "\n";
+            cout << "\n Текущий пользователь: " << currentUser->getUsername() << "\n";
         }
 
         showMenu();
         cin >> choice;
-        cin.ignore(); 
-       
+        cin.ignore();
+
         switch (choice)
         {
-        case 1: 
+        case 1:
+        {
+            system("cls");
             cout << "Введите имя пользователя: ";
             getline(cin, username);
             cout << "Введите пароль: ";
             getline(cin, password);
 
-            if (authManager.registerUser(username, password)) 
+            if (authManager.registerUser(username, password))
             {
-                cout << " Регистрация успешна!\n";
+                system("cls");
+                cout << "Регистрация успешна! \n";
+                cin.get();
+                system("cls");
             }
-            else 
+            else
             {
-                cout << " Пользователь уже существует!\n";
+                system("cls");
+                cout << " Пользователь уже существует! \n";
+                cin.get();
+                system("cls");
             }
             break;
+        }
 
-        case 2: 
+        case 2:
+        {
+            system("cls");
+
             cout << "Введите имя пользователя: ";
             getline(cin, username);
             cout << "Введите пароль: ";
             getline(cin, password);
 
             currentUser = authManager.login(username, password);
-            if (currentUser) 
+            if (currentUser)
             {
-                cout << " Вход выполнен успешно! Добро пожаловать, " << username << "!\n";
+                system("cls");
+                cout << " Успешно! Добро пожаловать, " << username << "!\n";
+                cin.ignore();
+                system("cls");
             }
-            else 
+            else
             {
-                cout << " Неверные учетные данные!\n";
+                system("cls");
+                cout << " Неверные учетные данные! \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+                cin.ignore();
+                system("cls");
             }
+            system("cls");
             break;
+        }
 
-        case 3: 
+        case 3:
+        {
             if (!currentUser)
             {
-                cout << " Сначала войдите в систему!\n";
+                system("cls");
+                cout << " Сначала войдите в систему! \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+                cin.ignore();
+                system("cls");
                 break;
             }
-
+            system("cls");
             cout << "Введите получателя: ";
             getline(cin, recipient);
             cout << "Введите сообщение: ";
             getline(cin, message);
 
             messageService.sendPrivateMessage(currentUser->getUsername(), recipient, message);
+            cin.get();
+            system("cls");
             break;
+        }
 
-        case 4: 
-            if (!currentUser) 
+        case 4:
+        {
+            if (!currentUser)
             {
-                cout << " Сначала войдите в систему!\n";
+                system("cls");
+                cout << " Сначала войдите в систему! \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+                cin.ignore();
+                system("cls");
                 break;
             }
+            system("cls");
 
             cout << "Введите сообщение для всех: ";
             getline(cin, message);
 
             messageService.broadcastMessage(currentUser->getUsername(), message);
+            cin.get();
+            system("cls");
             break;
+        }
 
-        case 5: 
-            if (!currentUser) 
+        case 5:
+        {
+            if (!currentUser)
             {
-                cout << " Сначала войдите в систему!\n";
+                system("cls");
+                cout << " Сначала войдите в систему! \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+                cin.ignore();
+                system("cls");
                 break;
             }
-
-            cout << "\n---  Ваши сообщения ---\n";
+            system("cls");
+            cout << "\n Ваши сообщения \n";
             auto messages = currentUser->getMessages();
-            if (messages.empty()) 
+            cin.ignore();
+            
+            if (messages.empty())
             {
-                cout << "У вас нет сообщений\n";
+                cout << "У вас нет сообщений \n";
             }
-            else {
-                for (size_t i = 0; i < messages.size(); i++) 
+            else
+            {
+                for (size_t i = 0; i < messages.size(); i++)
                 {
                     cout << (i + 1) << ". " << messages[i] << "\n";
                 }
             }
+            cin.get();
+            system("cls");
             break;
+        }
 
-        case 6: 
+        case 6:
+        {
+            system("cls");
             authManager.listUsers();
+            cout << "Нажимите любую кнопку чтобы продолжить или начать заново... ";
+            cin.ignore();
+            system("cls");
             break;
+        }
 
-        case 7: 
+        case 7:
+        {
             if (!currentUser)
             {
-                cout << " Сначала войдите в систему!\n";
-                break;
+                {
+                    system("cls");
+                    cout << " Сначала войдите в систему!\n Нажимите любую кнопку чтобы продолжить или начать заново... ";
+                    cin.ignore();
+                    system("cls");
+                    break;
+                }
             }
             currentUser->clearMessages();
-            cout << " Сообщения очищены\n";
+            system("cls");
+            cout << " Сообщения очищены \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+            cin.ignore();
+            system("cls");
             break;
+        }
 
         case 8:
-            cout << " Выход из системы...\n";
+        {
+            system("cls");
+            cout << "  Выход из системы... \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+            cin.ignore();
+            system("cls");
             break;
+        }
 
         default:
-            cout << " Неверный выбор!\n";
+        {
+            system("cls");
+            cout << " Неверный выбор! \n Нажимите любую кнопку чтобы продолжить или начать заново...";
+            cin.ignore();
+            system("cls");
         }
-    } while (choice != 8);
+        }
+    }
+    while (choice != 8);
 
-    return 0;9
+    return 0;
 }
